@@ -1,0 +1,82 @@
+<!doctype html>
+
+<!-- **********************************************************************************
+    ESTA ES LA STARTER PAGE DE BOOTSTRAP QUE SE PUEDE ENCONTRAR EN SU PAGINA WEB 
+     **********************************************************************************
+-->
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
+    
+    <link rel="stylesheet" href="css/videojuegos.css">
+
+    <title>GamesClub</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <a th:href="@{/}" class="navbar-brand">
+            <img th:src="@{/img/logo.png}" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">
+            Tienda GamesClub
+      </a>
+        
+      <!-- BOTON PARA CREAR VIDEOJUEGOS: SE VA A LA URL /videojuegos/crear -->
+      <a th:href="@{/videojuegos/crear}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Crear Videojuego</a>
+        
+      <!-- PARA BUSCAR VIDEOJUEGOS -->
+      <form th:action="@{/buscar}" class="form-inline my-2 my-lg-0">
+        <!--  ${param} : en Thymeleaf es una variable implicita que contiene todos los parametros de la URL de la pagina -->
+        <input name="q" autofocus="autofocus" class="form-control mr-sm-2" type="search" th:placeholder="${param.q}" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+      </form>
+    </nav>
+    
+    <h1 align="center" th:text="${nombreDistribuidor}"></h1>
+    
+    <div class="container mt-4 vj-destacados"> <!--margen top 4: para que haya un poco de separación arriba -->
+        <div class="row">
+            
+            <!-- Iteración en Thymeleaf para cada videojuego -->
+            <!-- debemos en Netbeans tb declarar global el atributo th:each-->
+            <div th:each="juego : ${videojuegos}" class="col-md-3 mb-4"> <!-- margen bottom 4 : darle un margen en bottom para que no esten pegados los cards -->
+                
+                <div class="card">
+                  <img th:src="${juego.imagen_url}" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h5 th:text="${juego.nombre}" class="card-title">B</h5>
+                    <p>
+                        <!-- Aqui hacemos creamos un link dinamico: Por cada distribuidor que haya creamos un link donde 
+                             se mostrará todos los juegos asociados a él.
+                             Esto linkará con la web /videojuegosPorDistribuidor?distribuidorId=1 (Ejemplo)
+                             La sintaxis de esto es:  th:href = @{/url(param1=valor,param2=valor)}
+                        -->
+                        <a  th:href="@{/videojuegosPorDistribuidor(distribuidorId=${juego.distribuidor.Id})}"
+                            th:text="${juego.distribuidor.nombre}" class="badge badge-warning"></a>
+                    </p>
+                    <p th:text="${juego.descripcion}" class="card-text"></p>
+                    <div class="card-footer text-muted">
+                        <a th:href="@{/videojuegos/modificar(id=${juego.id})}" class="btn btn-primary">Ver detalles</a>
+                    </div>
+                  </div>
+                </div>
+                
+            </div>
+                    
+               
+        </div>
+    </div>
+    
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  </body>
+</html>
